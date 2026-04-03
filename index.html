@@ -7,138 +7,134 @@
     <style>
         :root { --main: #ff0000; }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* إزالة كافة تأثيرات الضغط والوميض */
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            outline: none;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background-color: #000; font-family: 'Cairo', sans-serif;
         }
 
-        /* حاوية الفيديو - تثبيت وضمان عدم التحرك */
+        /* ضبط الفيديو ليكون ثابت وخلف كل شيء */
         #video-bg {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1; object-fit: cover;
-            filter: brightness(0.5);
-            pointer-events: none;
+            z-index: 1; /* الفيديو في الطبقة 1 */
+            object-fit: cover;
+            filter: brightness(0.7);
         }
 
-        /* الحاوية الرئيسية لضمان التوسط العمودي والأفقي */
+        /* الحاوية فوق الفيديو مباشرة */
         .wrapper {
+            position: relative;
+            z-index: 2; /* اللوحة في الطبقة 2 فوق الفيديو */
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100dvh;
-            padding: 20px;
+            padding: 15px;
         }
 
-        /* اللوحة الشفافة - تم ضبط الزوايا والسنترة */
+        /* لوحة صغيرة جداً وشفافة (Glassmorphism) */
         .glass-card {
-            width: 100%;
-            max-width: 350px;
-            background: rgba(0, 0, 0, 0.5); /* شفافية متوازنة */
-            padding: 25px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 85%;
+            max-width: 320px; /* تصغير اللوحة */
+            background: rgba(255, 255, 255, 0.03); /* شفافة جداً */
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            animation: fadeIn 0.8s ease-in-out;
+            backdrop-filter: blur(8px); /* تغبيش خفيف جداً لتبيين المقطع */
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { color: var(--main); font-size: 1.8em; margin: 0; text-shadow: 0 0 15px rgba(255,0,0,0.4); }
-        .ver { color: #fff; font-size: 0.7em; margin-bottom: 15px; opacity: 0.7; letter-spacing: 1px; }
+        h1 { color: var(--main); font-size: 1.5em; margin: 0; text-shadow: 0 0 10px rgba(255,0,0,0.4); }
+        .ver { color: #fff; font-size: 0.65em; margin-bottom: 12px; opacity: 0.8; }
 
         .pledge {
-            color: #fff; font-size: 0.9em; line-height: 1.6;
-            background: rgba(255,255,255,0.05); padding: 15px;
-            border-radius: 12px; margin-bottom: 15px; 
-            border-right: 4px solid var(--main);
-            text-align: justify;
+            color: #fff; font-size: 0.85em; line-height: 1.5;
+            background: rgba(0,0,0,0.3); padding: 10px;
+            border-radius: 10px; margin-bottom: 12px; 
+            border-right: 3px solid var(--main);
+            text-align: right;
         }
 
-        /* رابط الدخول المطلوب */
         .srv-link {
             display: inline-block; color: #fff;
             text-decoration: underline; font-weight: bold;
-            margin-bottom: 20px; font-size: 1.1em;
-            transition: 0.3s;
+            margin-bottom: 15px; font-size: 1em;
         }
-        .srv-link:hover { color: var(--main); }
 
         input {
-            width: 100%; padding: 14px; margin: 8px 0;
-            border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.8); color: #fff; text-align: center;
-            font-size: 16px; outline: none;
+            width: 100%; padding: 12px; margin: 6px 0;
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5); color: #fff; text-align: center;
+            font-size: 16px;
         }
 
         .btn {
-            width: 100%; padding: 15px; background: var(--main);
-            color: #fff; border: none; border-radius: 12px;
-            font-size: 1.1em; font-weight: bold; cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+            width: 100%; padding: 12px; background: var(--main);
+            color: #fff; border: none; border-radius: 10px;
+            font-size: 1em; font-weight: bold; cursor: pointer;
+            transition: 0.2s;
         }
-        .btn:active { transform: scale(0.96); }
+        /* حذف أي تأثير حركي عند الضغط */
+        .btn:active { opacity: 0.8; }
 
-        .nuke-btn { background: transparent; border: 2px solid var(--main); color: var(--main); margin-top: 20px; box-shadow: none; }
+        .nuke-btn { background: transparent; border: 2px solid var(--main); color: var(--main); margin-top: 15px; }
 
         .hidden { display: none; }
-        .back { display: block; margin-top: 15px; color: #bbb; font-size: 0.85em; text-decoration: underline; cursor: pointer; }
+        .back { display: block; margin-top: 12px; color: #ccc; font-size: 0.8em; text-decoration: underline; cursor: pointer; }
 
         .row { 
             display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(255,255,255,0.05); padding: 12px; 
-            margin: 8px 0; border-radius: 12px; color: #fff; font-size: 0.9em; 
+            background: rgba(0,0,0,0.4); padding: 10px; 
+            margin: 6px 0; border-radius: 10px; color: #fff; font-size: 0.85em; 
         }
-        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- الفيديو الجديد مع إعدادات التشغيل التلقائي للجوال -->
-    <video id="video-bg" autoplay muted loop playsinline webkit-playsinline preload="auto">
+    <video id="video-bg" autoplay muted loop playsinline webkit-playsinline>
         <source src="https://f.top4top.io/m_374527hn94.mp4" type="video/mp4">
     </video>
 
     <div class="wrapper">
         
-        <!-- صفحة 1 -->
         <div id="p1" class="glass-card">
             <h1>Tools 2399 Pr</h1>
-            <div class="ver">LORD | EXCLUSIVE V5</div>
+            <div class="ver">BY LORD | V5</div>
             <div class="pledge">
-                أنا المستخدم، أتعهد بأن دخولي لهذه الأداة مسؤوليتي الشخصية، وأن Lord غير مسؤول عن أي استخدام خاطئ أو ضرر ناتج.
+                أنا المستخدم، أتعهد بأن دخولي مسؤوليتي الشخصية، وأن Lord غير مسؤول عن أي ضرر.
             </div>
             <a href="https://discord.gg/2399k" target="_blank" class="srv-link">اضغط دخول إلى سيرفر</a>
-            <button class="btn" onclick="move(2)">أوافق وأتعهد بالدخول</button>
+            <button class="btn" onclick="move(2)">أوافق وأتعهد</button>
         </div>
 
-        <!-- صفحة 2 -->
         <div id="p2" class="glass-card hidden">
             <h1>Login</h1>
-            <div class="ver">ادخل بيانات البوت والسيرفر</div>
-            <input type="password" id="tk" placeholder="Bot Token">
-            <input type="text" id="id" placeholder="Server ID">
-            <button class="btn" onclick="check()">اتصال سريع بالخادم</button>
-            <span class="back" onclick="move(1)">رجوع للرئيسية</span>
+            <input type="password" id="tk" placeholder="التوكن">
+            <input type="text" id="id" placeholder="ID السيرفر">
+            <button class="btn" onclick="check()">اتصال</button>
+            <span class="back" onclick="move(1)">رجوع</span>
         </div>
 
-        <!-- صفحة 3 -->
         <div id="p3" class="glass-card hidden">
-            <h1 style="font-size:1.5em;">Control Panel</h1>
-            <div class="ver" style="margin-bottom:10px;">إعدادات الهجوم V5</div>
+            <h1 style="font-size:1.3em;">Control</h1>
             <input type="text" id="rn" placeholder="اسم الرومات">
-            <input type="text" id="sm" placeholder="رسالة السبام">
-            <div class="row"><span>تصفية الرومات</span><input type="checkbox" id="dc"></div>
+            <input type="text" id="sm" placeholder="الرسالة">
+            <div class="row"><span>حذف الرومات</span><input type="checkbox" id="dc"></div>
             <div class="row"><span>طرد الأعضاء</span><input type="checkbox" id="km"></div>
-            <button class="btn nuke-btn" onclick="execute()">بدء التدمير V5</button>
-            <span class="back" onclick="move(2)">إلغاء الاتصال</span>
+            <button class="btn nuke-btn" onclick="execute()">تدمير V5</button>
+            <span class="back" onclick="move(2)">إلغاء</span>
         </div>
 
     </div>
@@ -146,10 +142,7 @@
     <script>
         const v = document.getElementById('video-bg');
 
-        // دالة لضمان عمل الفيديو فور التفاعل
-        function startVid() {
-            v.play().catch(() => {});
-        }
+        function startVid() { v.play().catch(()=>{}); }
 
         function move(step) {
             startVid();
@@ -158,10 +151,8 @@
         }
 
         function check() {
-            const t = document.getElementById('tk').value;
-            const i = document.getElementById('id').value;
-            if(!t || !i) return alert("يرجى تعبئة البيانات!");
-            alert("✓ تم الربط بنجاح، جاري فتح اللوحة...");
+            if(!document.getElementById('tk').value || !document.getElementById('id').value) return alert("اكمل البيانات!");
+            alert("✓ تم الاتصال");
             move(3);
         }
 
@@ -169,16 +160,15 @@
             const data = {
                 token: document.getElementById('tk').value,
                 guildId: document.getElementById('id').value,
-                roomName: document.getElementById('rn').value || "Nuked-By-Lord",
-                message: document.getElementById('sm').value || "@everyone V5 HERE",
+                roomName: document.getElementById('rn').value || "Lord-V5",
+                message: document.getElementById('sm').value || "@everyone V5",
                 delChannels: document.getElementById('dc').checked,
                 kickMembers: document.getElementById('km').checked
             };
-            alert("⚠️ تم إعطاء أمر التنفيذ.. راقب السيرفر!");
+            alert("بدء العملية..");
             fetch('/run-nuke', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         }
 
-        // تشغيل الفيديو عند أي لمسة (ضروري للآيفون)
         document.addEventListener('touchstart', startVid, {once: true});
         document.addEventListener('click', startVid, {once: true});
     </script>
