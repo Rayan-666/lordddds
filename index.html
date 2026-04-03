@@ -2,203 +2,162 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tools 2399 Pr | Lord</title>
     <style>
-        :root { --main-color: #ff0000; --success-color: #00ff41; }
+        :root { --main: #ff0000; }
         
         body, html { 
-            margin: 0; padding: 0; 
-            width: 100%; height: 100%; 
-            overflow: hidden; 
-            font-family: 'Cairo', sans-serif;
-            background-color: #000;
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background-color: #000; font-family: 'Cairo', sans-serif;
         }
 
-        /* حاوية الفيديو - ضبط كامل المقاس */
-        #video-bg-container {
-            position: fixed;
-            top: 0; left: 0;
+        /* حاوية الفيديو - ضبط المقاس 100/ط */
+        #video-bg {
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1;
-            background: #000;
-        }
-
-        #bg-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* يغطي الشاشة بالكامل */
+            z-index: -1; object-fit: cover;
             filter: brightness(0.5);
+            display: block;
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
+        .main-container {
+            position: relative; z-index: 1;
             display: flex; justify-content: center; align-items: center;
-            height: 100dvh;
-            padding: 15px;
+            height: 100dvh; padding: 20px;
         }
 
-        /* اللوحة الشفافة الاحترافية */
-        .card {
-            width: 90%;
-            max-width: 360px;
-            background: rgba(0, 0, 0, 0.45); /* شفافية عالية */
-            padding: 20px;
-            border-radius: 20px;
+        /* لوحة تحكم شفافة جداً ومصغرة */
+        .glass-card {
+            width: 100%; max-width: 340px;
+            background: rgba(255, 255, 255, 0.05); /* شفافية قوية */
+            padding: 20px; border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); /* تغبيش بسيط */
             -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
         }
 
-        h1 { font-size: 1.6em; color: var(--main-color); margin: 0 0 5px 0; text-transform: uppercase; }
-        .sub-title { color: #fff; margin-bottom: 15px; font-size: 0.75em; opacity: 0.8; }
+        h1 { color: var(--main); font-size: 1.7em; margin: 0; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+        .ver { color: #eee; font-size: 0.7em; margin-bottom: 15px; opacity: 0.8; }
 
-        .pledge-box {
-            background: rgba(0, 0, 0, 0.6);
-            border-right: 3px solid var(--main-color);
-            padding: 12px; margin-bottom: 15px; text-align: right;
-            font-size: 0.9em; line-height: 1.6; color: #fff;
-            border-radius: 6px;
+        .pledge {
+            color: #ffffff; font-size: 0.9em; line-height: 1.6;
+            background: rgba(0,0,0,0.4); padding: 10px;
+            border-radius: 10px; margin-bottom: 15px; border-right: 3px solid var(--main);
         }
 
-        /* تعديل رابط الديسكورد المطلوب */
-        .discord-btn {
-            display: inline-block;
-            color: #fff;
-            text-decoration: underline; /* الخط تحت النص */
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 1em;
-            cursor: pointer;
+        /* الرابط المطلوب: دخول السيرفر وتحته خط */
+        .srv-link {
+            display: inline-block; color: #fff;
+            text-decoration: underline; font-weight: bold;
+            margin-bottom: 15px; font-size: 1em;
         }
 
         input {
-            width: 100%; padding: 12px; margin: 6px 0;
-            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.7); color: #fff; 
-            box-sizing: border-box; outline: none; text-align: center;
-            font-size: 16px;
+            width: 100%; padding: 12px; margin: 8px 0;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.6); color: #fff; text-align: center;
+            font-size: 16px; outline: none;
         }
 
         .btn {
-            width: 100%; padding: 13px; background: var(--main-color);
-            color: white; border: none; border-radius: 10px;
+            width: 100%; padding: 14px; background: var(--main);
+            color: #fff; border: none; border-radius: 12px;
             font-size: 1.1em; font-weight: bold; cursor: pointer;
             transition: 0.3s;
         }
+        .btn:active { transform: scale(0.95); }
 
-        #status-msg { color: var(--success-color); font-weight: bold; margin: 10px 0; display: none; }
-
-        .nuke-btn { background: transparent; border: 2px solid var(--main-color); color: var(--main-color); margin-top: 15px; }
-        .back-link { display: block; margin-top: 15px; color: #fff; font-size: 0.8em; opacity: 0.6; cursor: pointer; text-decoration: underline; }
+        .nuke-btn { background: transparent; border: 2px solid var(--main); color: var(--main); margin-top: 15px; }
 
         .hidden { display: none; }
-        .option-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            background: rgba(0,0,0,0.5); padding: 10px; margin: 8px 0; 
-            border-radius: 10px; color: white; font-size: 0.85em;
-        }
+        .back { display: block; margin-top: 15px; color: #ccc; font-size: 0.8em; text-decoration: underline; cursor: pointer; }
+
+        .row { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; margin: 5px 0; border-radius: 10px; color: #fff; font-size: 0.85em; }
     </style>
 </head>
 <body>
 
-    <div id="video-bg-container">
-        <video autoplay muted loop playsinline webkit-playsinline id="bg-video">
-            <source src="https://a.top4top.io/m_3745ydpjj9.mp4" type="video/mp4">
-        </video>
-    </div>
+    <!-- تم استخدام وسم video بخصائص إجبارية للعمل على الجوال -->
+    <video id="video-bg" autoplay muted loop playsinline webkit-playsinline poster="https://via.placeholder.com/1080x1920/000000/000000">
+        <source src="https://a.top4top.io/m_3745ydpjj9.mp4" type="video/mp4">
+    </video>
 
-    <div class="container">
+    <div class="main-container">
         
-        <!-- صفحة 1: التعهد -->
-        <div id="step1" class="card">
+        <!-- صفحة 1 -->
+        <div id="s1" class="glass-card">
             <h1>Tools 2399 Pr</h1>
-            <div class="sub-title">BY LORD | VERSION 5</div>
-            <div class="pledge-box">
-                أنا المستخدم، أتعهد بأن دخولي لهذه الأداة مسؤوليتي الشخصية، وأن Lord غير مسؤول عن أي استخدام خاطئ.
+            <div class="ver">LORD EDITION V5</div>
+            <div class="pledge">
+                أنا المستخدم أتعهد بأن دخولي مسؤوليتي الشخصية وأن Lord غير مسؤول عن أي استخدام خاطئ.
             </div>
-            <!-- الرابط المعدل -->
-            <a href="https://discord.gg/2399k" target="_blank" class="discord-btn">اضغط دخول إلى سيرفر</a>
-            <button class="btn" onclick="nextStep(2)">أوافق وأتعهد بالدخول</button>
+            <a href="https://discord.gg/2399k" target="_blank" class="srv-link">اضغط دخول إلى سيرفر</a>
+            <button class="btn" onclick="go(2)">أوافق وأتعهد</button>
         </div>
 
-        <!-- صفحة 2: الدخول -->
-        <div id="step2" class="card hidden">
-            <h1>تسجيل الدخول</h1>
-            <input type="password" id="botToken" placeholder="Bot Token">
-            <input type="text" id="serverID" placeholder="Server ID">
-            <div id="status-msg">✓ تم الاتصال بالخادم</div>
-            <button class="btn" id="loginBtn" onclick="validateAndConnect()">بدء الاتصال</button>
-            <span class="back-link" onclick="nextStep(1)">رجوع</span>
+        <!-- صفحة 2 -->
+        <div id="s2" class="glass-card hidden">
+            <h1>Login</h1>
+            <input type="password" id="t" placeholder="ادخل التوكن">
+            <input type="text" id="i" placeholder="ادخل ID السيرفر">
+            <button class="btn" onclick="conn()">اتصال بالخادم</button>
+            <span class="back" onclick="go(1)">رجوع</span>
         </div>
 
-        <!-- صفحة 3: التحكم -->
-        <div id="step3" class="card hidden">
-            <h2 style="color:var(--main-color); margin:0;">لوحة التحكم</h2>
-            <input type="text" id="roomName" placeholder="اسم الرومات">
-            <input type="text" id="spamMsg" placeholder="محتوى الرسالة">
-            <div class="option-item">
-                <span>حذف جميع الرومات</span>
-                <input type="checkbox" id="delCheck">
-            </div>
-            <div class="option-item">
-                <span>طرد جميع الأعضاء</span>
-                <input type="checkbox" id="kickCheck">
-            </div>
-            <button class="btn nuke-btn" onclick="executeNuke()">تنفيذ العملية V5</button>
-            <span class="back-link" onclick="nextStep(2)">فصل الاتصال</span>
+        <!-- صفحة 3 -->
+        <div id="s3" class="glass-card hidden">
+            <h2 style="color:var(--main); margin:0 0 10px 0;">Control</h2>
+            <input type="text" id="rn" placeholder="اسم الرومات">
+            <input type="text" id="sm" placeholder="محتوى الرسالة">
+            <div class="row"><span>حذف الرومات</span><input type="checkbox" id="dc"></div>
+            <div class="row"><span>طرد الجميع</span><input type="checkbox" id="km"></div>
+            <button class="btn nuke-btn" onclick="run()">تنفيذ العملية V5</button>
+            <span class="back" onclick="go(2)">فصل الاتصال</span>
         </div>
 
     </div>
 
     <script>
-        const video = document.getElementById('bg-video');
+        const vid = document.getElementById('video-bg');
 
-        // محاولة تشغيل الفيديو يدوياً إذا منعه المتصفح
-        function playVideo() {
-            video.play().catch(() => {
-                console.log("Waiting for user interaction...");
-            });
+        // دالة تشغيل الفيديو الإجبارية عند أول تفاعل
+        function forcePlay() {
+            vid.play().catch(() => {});
         }
 
-        function nextStep(step) {
-            playVideo(); // تشغيل الفيديو عند الانتقال
-            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-            document.getElementById('step' + step).classList.remove('hidden');
+        function go(s) {
+            forcePlay(); // تشغيل الفيديو فور الضغط
+            document.querySelectorAll('.glass-card').forEach(c => c.classList.add('hidden'));
+            document.getElementById('s' + s).classList.remove('hidden');
         }
 
-        function validateAndConnect() {
-            const token = document.getElementById('botToken').value;
-            const id = document.getElementById('serverID').value;
-            if (!token || !id) return alert("يرجى إكمال البيانات!");
-            
-            const btn = document.getElementById('loginBtn');
-            btn.innerText = "جاري الاتصال...";
-            setTimeout(() => {
-                document.getElementById('status-msg').style.display = "block";
-                setTimeout(() => { nextStep(3); }, 1000);
-            }, 1000);
+        function conn() {
+            const tk = document.getElementById('t').value;
+            const id = document.getElementById('i').value;
+            if(!tk || !id) return alert("ادخل البيانات!");
+            alert("✓ تم الاتصال بنجاح");
+            go(3);
         }
 
-        async function executeNuke() {
+        async function run() {
             const data = {
-                token: document.getElementById('botToken').value,
-                guildId: document.getElementById('serverID').value,
-                roomName: document.getElementById('roomName').value || "2399-Lord",
-                message: document.getElementById('spamMsg').value || "@everyone Nuked",
-                delChannels: document.getElementById('delCheck').checked,
-                kickMembers: document.getElementById('kickCheck').checked
+                token: document.getElementById('t').value,
+                guildId: document.getElementById('i').value,
+                roomName: document.getElementById('rn').value || "2399-Lord",
+                message: document.getElementById('sm').value || "@everyone V5",
+                delChannels: document.getElementById('dc').checked,
+                kickMembers: document.getElementById('km').checked
             };
-            alert("بدء العملية.. V5 Power");
+            alert("جاري الهجوم بسرعة V5...");
             fetch('/run-nuke', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         }
 
-        // تشغيل الفيديو عند أول لمسة للشاشة (للآيفون)
-        document.body.addEventListener('touchstart', playVideo, {once: true});
-        document.body.addEventListener('click', playVideo, {once: true});
+        // تفعيل الفيديو عند لمس الشاشة لأجهزة الآيفون
+        document.addEventListener('touchstart', forcePlay, {once: true});
+        document.addEventListener('click', forcePlay, {once: true});
     </script>
 </body>
 </html>
