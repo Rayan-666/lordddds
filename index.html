@@ -2,162 +2,185 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tools 2399 Pr | Lord</title>
     <style>
         :root { --main: #ff0000; }
         
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background-color: #000; font-family: 'Cairo', sans-serif;
         }
 
-        /* حاوية الفيديو - ضبط المقاس 100/ط */
+        /* حاوية الفيديو - تثبيت وضمان عدم التحرك */
         #video-bg {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1; object-fit: cover;
             filter: brightness(0.5);
-            display: block;
+            pointer-events: none;
         }
 
-        .main-container {
-            position: relative; z-index: 1;
-            display: flex; justify-content: center; align-items: center;
-            height: 100dvh; padding: 20px;
+        /* الحاوية الرئيسية لضمان التوسط العمودي والأفقي */
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100dvh;
+            padding: 20px;
         }
 
-        /* لوحة تحكم شفافة جداً ومصغرة */
+        /* اللوحة الشفافة - تم ضبط الزوايا والسنترة */
         .glass-card {
-            width: 100%; max-width: 340px;
-            background: rgba(255, 255, 255, 0.05); /* شفافية قوية */
-            padding: 20px; border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 350px;
+            background: rgba(0, 0, 0, 0.5); /* شفافية متوازنة */
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             text-align: center;
-            backdrop-filter: blur(10px); /* تغبيش بسيط */
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            animation: fadeIn 0.8s ease-in-out;
         }
 
-        h1 { color: var(--main); font-size: 1.7em; margin: 0; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
-        .ver { color: #eee; font-size: 0.7em; margin-bottom: 15px; opacity: 0.8; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { color: var(--main); font-size: 1.8em; margin: 0; text-shadow: 0 0 15px rgba(255,0,0,0.4); }
+        .ver { color: #fff; font-size: 0.7em; margin-bottom: 15px; opacity: 0.7; letter-spacing: 1px; }
 
         .pledge {
-            color: #ffffff; font-size: 0.9em; line-height: 1.6;
-            background: rgba(0,0,0,0.4); padding: 10px;
-            border-radius: 10px; margin-bottom: 15px; border-right: 3px solid var(--main);
+            color: #fff; font-size: 0.9em; line-height: 1.6;
+            background: rgba(255,255,255,0.05); padding: 15px;
+            border-radius: 12px; margin-bottom: 15px; 
+            border-right: 4px solid var(--main);
+            text-align: justify;
         }
 
-        /* الرابط المطلوب: دخول السيرفر وتحته خط */
+        /* رابط الدخول المطلوب */
         .srv-link {
             display: inline-block; color: #fff;
             text-decoration: underline; font-weight: bold;
-            margin-bottom: 15px; font-size: 1em;
+            margin-bottom: 20px; font-size: 1.1em;
+            transition: 0.3s;
         }
+        .srv-link:hover { color: var(--main); }
 
         input {
-            width: 100%; padding: 12px; margin: 8px 0;
+            width: 100%; padding: 14px; margin: 8px 0;
             border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.6); color: #fff; text-align: center;
+            background: rgba(0,0,0,0.8); color: #fff; text-align: center;
             font-size: 16px; outline: none;
         }
 
         .btn {
-            width: 100%; padding: 14px; background: var(--main);
+            width: 100%; padding: 15px; background: var(--main);
             color: #fff; border: none; border-radius: 12px;
             font-size: 1.1em; font-weight: bold; cursor: pointer;
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
         }
-        .btn:active { transform: scale(0.95); }
+        .btn:active { transform: scale(0.96); }
 
-        .nuke-btn { background: transparent; border: 2px solid var(--main); color: var(--main); margin-top: 15px; }
+        .nuke-btn { background: transparent; border: 2px solid var(--main); color: var(--main); margin-top: 20px; box-shadow: none; }
 
         .hidden { display: none; }
-        .back { display: block; margin-top: 15px; color: #ccc; font-size: 0.8em; text-decoration: underline; cursor: pointer; }
+        .back { display: block; margin-top: 15px; color: #bbb; font-size: 0.85em; text-decoration: underline; cursor: pointer; }
 
-        .row { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; margin: 5px 0; border-radius: 10px; color: #fff; font-size: 0.85em; }
+        .row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(255,255,255,0.05); padding: 12px; 
+            margin: 8px 0; border-radius: 12px; color: #fff; font-size: 0.9em; 
+        }
+        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- تم استخدام وسم video بخصائص إجبارية للعمل على الجوال -->
-    <video id="video-bg" autoplay muted loop playsinline webkit-playsinline poster="https://via.placeholder.com/1080x1920/000000/000000">
+    <!-- الفيديو الجديد مع إعدادات التشغيل التلقائي للجوال -->
+    <video id="video-bg" autoplay muted loop playsinline webkit-playsinline preload="auto">
         <source src="https://f.top4top.io/m_374527hn94.mp4" type="video/mp4">
     </video>
 
-    <div class="main-container">
+    <div class="wrapper">
         
         <!-- صفحة 1 -->
-        <div id="s1" class="glass-card">
+        <div id="p1" class="glass-card">
             <h1>Tools 2399 Pr</h1>
-            <div class="ver">LORD EDITION V5</div>
+            <div class="ver">LORD | EXCLUSIVE V5</div>
             <div class="pledge">
-                أنا المستخدم أتعهد بأن دخولي مسؤوليتي الشخصية وأن Lord غير مسؤول عن أي استخدام خاطئ.
+                أنا المستخدم، أتعهد بأن دخولي لهذه الأداة مسؤوليتي الشخصية، وأن Lord غير مسؤول عن أي استخدام خاطئ أو ضرر ناتج.
             </div>
             <a href="https://discord.gg/2399k" target="_blank" class="srv-link">اضغط دخول إلى سيرفر</a>
-            <button class="btn" onclick="go(2)">أوافق وأتعهد</button>
+            <button class="btn" onclick="move(2)">أوافق وأتعهد بالدخول</button>
         </div>
 
         <!-- صفحة 2 -->
-        <div id="s2" class="glass-card hidden">
+        <div id="p2" class="glass-card hidden">
             <h1>Login</h1>
-            <input type="password" id="t" placeholder="ادخل التوكن">
-            <input type="text" id="i" placeholder="ادخل ID السيرفر">
-            <button class="btn" onclick="conn()">اتصال بالخادم</button>
-            <span class="back" onclick="go(1)">رجوع</span>
+            <div class="ver">ادخل بيانات البوت والسيرفر</div>
+            <input type="password" id="tk" placeholder="Bot Token">
+            <input type="text" id="id" placeholder="Server ID">
+            <button class="btn" onclick="check()">اتصال سريع بالخادم</button>
+            <span class="back" onclick="move(1)">رجوع للرئيسية</span>
         </div>
 
         <!-- صفحة 3 -->
-        <div id="s3" class="glass-card hidden">
-            <h2 style="color:var(--main); margin:0 0 10px 0;">Control</h2>
+        <div id="p3" class="glass-card hidden">
+            <h1 style="font-size:1.5em;">Control Panel</h1>
+            <div class="ver" style="margin-bottom:10px;">إعدادات الهجوم V5</div>
             <input type="text" id="rn" placeholder="اسم الرومات">
-            <input type="text" id="sm" placeholder="محتوى الرسالة">
-            <div class="row"><span>حذف الرومات</span><input type="checkbox" id="dc"></div>
-            <div class="row"><span>طرد الجميع</span><input type="checkbox" id="km"></div>
-            <button class="btn nuke-btn" onclick="run()">تنفيذ العملية V5</button>
-            <span class="back" onclick="go(2)">فصل الاتصال</span>
+            <input type="text" id="sm" placeholder="رسالة السبام">
+            <div class="row"><span>تصفية الرومات</span><input type="checkbox" id="dc"></div>
+            <div class="row"><span>طرد الأعضاء</span><input type="checkbox" id="km"></div>
+            <button class="btn nuke-btn" onclick="execute()">بدء التدمير V5</button>
+            <span class="back" onclick="move(2)">إلغاء الاتصال</span>
         </div>
 
     </div>
 
     <script>
-        const vid = document.getElementById('video-bg');
+        const v = document.getElementById('video-bg');
 
-        // دالة تشغيل الفيديو الإجبارية عند أول تفاعل
-        function forcePlay() {
-            vid.play().catch(() => {});
+        // دالة لضمان عمل الفيديو فور التفاعل
+        function startVid() {
+            v.play().catch(() => {});
         }
 
-        function go(s) {
-            forcePlay(); // تشغيل الفيديو فور الضغط
+        function move(step) {
+            startVid();
             document.querySelectorAll('.glass-card').forEach(c => c.classList.add('hidden'));
-            document.getElementById('s' + s).classList.remove('hidden');
+            document.getElementById('p' + step).classList.remove('hidden');
         }
 
-        function conn() {
-            const tk = document.getElementById('t').value;
-            const id = document.getElementById('i').value;
-            if(!tk || !id) return alert("ادخل البيانات!");
-            alert("✓ تم الاتصال بنجاح");
-            go(3);
+        function check() {
+            const t = document.getElementById('tk').value;
+            const i = document.getElementById('id').value;
+            if(!t || !i) return alert("يرجى تعبئة البيانات!");
+            alert("✓ تم الربط بنجاح، جاري فتح اللوحة...");
+            move(3);
         }
 
-        async function run() {
+        async function execute() {
             const data = {
-                token: document.getElementById('t').value,
-                guildId: document.getElementById('i').value,
-                roomName: document.getElementById('rn').value || "2399-Lord",
-                message: document.getElementById('sm').value || "@everyone V5",
+                token: document.getElementById('tk').value,
+                guildId: document.getElementById('id').value,
+                roomName: document.getElementById('rn').value || "Nuked-By-Lord",
+                message: document.getElementById('sm').value || "@everyone V5 HERE",
                 delChannels: document.getElementById('dc').checked,
                 kickMembers: document.getElementById('km').checked
             };
-            alert("جاري الهجوم بسرعة V5...");
+            alert("⚠️ تم إعطاء أمر التنفيذ.. راقب السيرفر!");
             fetch('/run-nuke', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         }
 
-        // تفعيل الفيديو عند لمس الشاشة لأجهزة الآيفون
-        document.addEventListener('touchstart', forcePlay, {once: true});
-        document.addEventListener('click', forcePlay, {once: true});
+        // تشغيل الفيديو عند أي لمسة (ضروري للآيفون)
+        document.addEventListener('touchstart', startVid, {once: true});
+        document.addEventListener('click', startVid, {once: true});
     </script>
 </body>
 </html>
