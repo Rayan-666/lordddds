@@ -5,94 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tools 2399 Pr | Lord</title>
     <style>
-        :root { --main-color: #ff0000; --success-color: #00ff41; --bg-overlay: rgba(0, 0, 0, 0.5); }
+        :root { --main-color: #ff0000; --success-color: #00ff41; }
         
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Cairo', sans-serif; background-color: #000; color: #fff; }
+        body, html { 
+            margin: 0; padding: 0; 
+            width: 100%; height: 100%; 
+            overflow: hidden; 
+            font-family: 'Cairo', sans-serif;
+            background-color: #000;
+        }
 
-        /* حاوية الفيديو لضمان التغطية الكاملة */
-        .video-background {
-            position: fixed; top: 0; left: 0;
+        /* حاوية الفيديو - ضبط كامل المقاس */
+        #video-bg-container {
+            position: fixed;
+            top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1; overflow: hidden;
+            z-index: -1;
             background: #000;
         }
 
         #bg-video {
-            width: 100%; height: 100%;
-            object-fit: cover; /* يضمن تغطية الشاشة بالكامل دون تشويه */
-            filter: brightness(0.6); /* تعتيم بسيط لتوضيح الكتابة */
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* يغطي الشاشة بالكامل */
+            filter: brightness(0.5);
         }
 
         .container {
-            position: relative; z-index: 1;
+            position: relative;
+            z-index: 1;
             display: flex; justify-content: center; align-items: center;
-            height: 100dvh; /* استخدام dVh لضمان المقاس الصحيح في الآيفون */
-            padding: 20px; box-sizing: border-box;
+            height: 100dvh;
+            padding: 15px;
         }
 
-        /* اللوحة الشفافة (تأثير الزجاج) */
+        /* اللوحة الشفافة الاحترافية */
         .card {
-            width: 100%; max-width: 360px;
-            background: rgba(20, 20, 20, 0.4); /* شفافية عالية للوحة الرئيسية */
-            padding: 25px; border-radius: 20px;
+            width: 90%;
+            max-width: 360px;
+            background: rgba(0, 0, 0, 0.45); /* شفافية عالية */
+            padding: 20px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            backdrop-filter: blur(15px); /* تأثير التغبيش الاحترافي V5 */
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
         }
 
-        h1 { font-size: 1.8em; color: var(--main-color); margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
-        .sub-title { color: #fff; margin-bottom: 20px; font-size: 0.8em; opacity: 0.9; }
+        h1 { font-size: 1.6em; color: var(--main-color); margin: 0 0 5px 0; text-transform: uppercase; }
+        .sub-title { color: #fff; margin-bottom: 15px; font-size: 0.75em; opacity: 0.8; }
 
         .pledge-box {
-            background: rgba(0, 0, 0, 0.6); /* صندوق تعهد مظلم لزيادة الوضوح */
-            border-right: 4px solid var(--main-color);
-            padding: 15px; margin-bottom: 20px; text-align: right;
-            font-size: 0.95em; line-height: 1.7; color: #ffffff;
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            border-right: 3px solid var(--main-color);
+            padding: 12px; margin-bottom: 15px; text-align: right;
+            font-size: 0.9em; line-height: 1.6; color: #fff;
+            border-radius: 6px;
         }
 
-        .discord-link { display: inline-block; color: #7289da; text-decoration: none; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; }
+        /* تعديل رابط الديسكورد المطلوب */
+        .discord-btn {
+            display: inline-block;
+            color: #fff;
+            text-decoration: underline; /* الخط تحت النص */
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+        }
 
         input {
-            width: 100%; padding: 12px; margin: 8px 0;
-            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 100%; padding: 12px; margin: 6px 0;
+            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(0, 0, 0, 0.7); color: #fff; 
             box-sizing: border-box; outline: none; text-align: center;
-            font-size: 16px; /* ضروري لمنع الزوم في الآيفون */
+            font-size: 16px;
         }
-
-        #status-msg { color: var(--success-color); font-weight: bold; margin-top: 10px; display: none; text-shadow: 0 0 10px var(--success-color); }
 
         .btn {
-            width: 100%; padding: 14px; background: var(--main-color);
-            color: white; border: none; border-radius: 12px;
+            width: 100%; padding: 13px; background: var(--main-color);
+            color: white; border: none; border-radius: 10px;
             font-size: 1.1em; font-weight: bold; cursor: pointer;
             transition: 0.3s;
-            -webkit-tap-highlight-color: transparent; /* يمنع تأثير اللمس الأزرق */
         }
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        .nuke-btn { background: transparent; border: 2px solid var(--main-color); color: var(--main-color); margin-top: 15px; font-size: 1.2em; }
-        .nuke-btn:active { background: var(--main-color); color: #fff; }
+        #status-msg { color: var(--success-color); font-weight: bold; margin: 10px 0; display: none; }
 
-        .back-link { display: block; margin-top: 15px; color: #fff; font-size: 0.85em; opacity: 0.7; cursor: pointer; text-decoration: underline; }
+        .nuke-btn { background: transparent; border: 2px solid var(--main-color); color: var(--main-color); margin-top: 15px; }
+        .back-link { display: block; margin-top: 15px; color: #fff; font-size: 0.8em; opacity: 0.6; cursor: pointer; text-decoration: underline; }
 
         .hidden { display: none; }
-        
         .option-item { 
             display: flex; align-items: center; justify-content: space-between; 
-            background: rgba(0, 0, 0, 0.5); padding: 10px 15px; margin: 10px 0; 
-            border-radius: 12px; color: white; font-size: 0.9em;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0,0,0,0.5); padding: 10px; margin: 8px 0; 
+            border-radius: 10px; color: white; font-size: 0.85em;
         }
-        input[type="checkbox"] { width: auto; margin: 0; padding: 0; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="video-background">
+    <div id="video-bg-container">
         <video autoplay muted loop playsinline webkit-playsinline id="bg-video">
             <source src="https://a.top4top.io/m_3745ydpjj9.mp4" type="video/mp4">
         </video>
@@ -100,35 +113,39 @@
 
     <div class="container">
         
+        <!-- صفحة 1: التعهد -->
         <div id="step1" class="card">
             <h1>Tools 2399 Pr</h1>
-            <div class="sub-title">Power By Lord | V5</div>
+            <div class="sub-title">BY LORD | VERSION 5</div>
             <div class="pledge-box">
-                أنا المستخدم، أتعهد بأن دخولي لهذه الأداة مسؤوليتي الشخصية، وأقر بأن <b style="color:var(--main-color)">Lord</b> غير مسؤول نهائياً عن أي استخدام خاطئ للأداة.
+                أنا المستخدم، أتعهد بأن دخولي لهذه الأداة مسؤوليتي الشخصية، وأن Lord غير مسؤول عن أي استخدام خاطئ.
             </div>
-            <a href="https://discord.gg/2399k" target="_blank" class="discord-link">Discord: 2399k</a>
-            <button class="btn" onclick="nextStep(2)">أوافق وأتعهد</button>
+            <!-- الرابط المعدل -->
+            <a href="https://discord.gg/2399k" target="_blank" class="discord-btn">اضغط دخول إلى سيرفر</a>
+            <button class="btn" onclick="nextStep(2)">أوافق وأتعهد بالدخول</button>
         </div>
 
+        <!-- صفحة 2: الدخول -->
         <div id="step2" class="card hidden">
-            <h1>Login</h1>
+            <h1>تسجيل الدخول</h1>
             <input type="password" id="botToken" placeholder="Bot Token">
             <input type="text" id="serverID" placeholder="Server ID">
-            <div id="status-msg">✓ تم الاتصال بنجاح</div>
-            <button class="btn" id="loginBtn" onclick="validateAndConnect()">اتصال بالخادم</button>
-            <span class="back-link" onclick="nextStep(1)">رجوع للتعهد</span>
+            <div id="status-msg">✓ تم الاتصال بالخادم</div>
+            <button class="btn" id="loginBtn" onclick="validateAndConnect()">بدء الاتصال</button>
+            <span class="back-link" onclick="nextStep(1)">رجوع</span>
         </div>
 
+        <!-- صفحة 3: التحكم -->
         <div id="step3" class="card hidden">
-            <h2 style="color:var(--main-color); margin:0 0 10px 0;">Control Panel</h2>
+            <h2 style="color:var(--main-color); margin:0;">لوحة التحكم</h2>
             <input type="text" id="roomName" placeholder="اسم الرومات">
             <input type="text" id="spamMsg" placeholder="محتوى الرسالة">
             <div class="option-item">
-                <span>حذف الرومات</span>
+                <span>حذف جميع الرومات</span>
                 <input type="checkbox" id="delCheck">
             </div>
             <div class="option-item">
-                <span>طرد الجميع</span>
+                <span>طرد جميع الأعضاء</span>
                 <input type="checkbox" id="kickCheck">
             </div>
             <button class="btn nuke-btn" onclick="executeNuke()">تنفيذ العملية V5</button>
@@ -138,7 +155,17 @@
     </div>
 
     <script>
+        const video = document.getElementById('bg-video');
+
+        // محاولة تشغيل الفيديو يدوياً إذا منعه المتصفح
+        function playVideo() {
+            video.play().catch(() => {
+                console.log("Waiting for user interaction...");
+            });
+        }
+
         function nextStep(step) {
+            playVideo(); // تشغيل الفيديو عند الانتقال
             document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
             document.getElementById('step' + step).classList.remove('hidden');
         }
@@ -146,18 +173,13 @@
         function validateAndConnect() {
             const token = document.getElementById('botToken').value;
             const id = document.getElementById('serverID').value;
-            if (!token || !id) return alert("خطأ: يرجى إدخال التوكن و ID السيرفر!");
+            if (!token || !id) return alert("يرجى إكمال البيانات!");
+            
             const btn = document.getElementById('loginBtn');
-            btn.disabled = true;
             btn.innerText = "جاري الاتصال...";
             setTimeout(() => {
                 document.getElementById('status-msg').style.display = "block";
-                setTimeout(() => {
-                    nextStep(3);
-                    btn.disabled = false;
-                    btn.innerText = "اتصال بالخادم";
-                    document.getElementById('status-msg').style.display = "none";
-                }, 1500);
+                setTimeout(() => { nextStep(3); }, 1000);
             }, 1000);
         }
 
@@ -165,24 +187,18 @@
             const data = {
                 token: document.getElementById('botToken').value,
                 guildId: document.getElementById('serverID').value,
-                roomName: document.getElementById('roomName').value || "Tools-2399-Pr",
-                message: document.getElementById('spamMsg').value || "Nuked By Lord V5",
+                roomName: document.getElementById('roomName').value || "2399-Lord",
+                message: document.getElementById('spamMsg').value || "@everyone Nuked",
                 delChannels: document.getElementById('delCheck').checked,
                 kickMembers: document.getElementById('kickCheck').checked
             };
-            if (!data.token || !data.guildId) return alert("ادخل البيانات أولاً!");
-            alert("تم إعطاء الأمر للهجوم.. سرعة V5 مفعلة!");
-            await fetch('/run-nuke', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
+            alert("بدء العملية.. V5 Power");
+            fetch('/run-nuke', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         }
 
-        // محاولة تشغيل الفيديو يدوياً إذا فشل التشغيل التلقائي (لبعض الجوالات)
-        document.body.addEventListener('touchstart', function() {
-            document.getElementById('bg-video').play();
-        }, {once: true});
+        // تشغيل الفيديو عند أول لمسة للشاشة (للآيفون)
+        document.body.addEventListener('touchstart', playVideo, {once: true});
+        document.body.addEventListener('click', playVideo, {once: true});
     </script>
 </body>
 </html>
